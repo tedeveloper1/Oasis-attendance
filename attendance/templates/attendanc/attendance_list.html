@@ -18,31 +18,48 @@
     <li><a href="{% url 'attendance_create' %}">Mark Attendance</a></li>
     <li><a href="{% url 'attendance_create' %}">Add Attendance</a></li>
     <li><a href="{% url 'team_member_create' %}">Add New Member</a></li>
+    <li><a href="{% url 'download_attendance_csv' %}">Download Attendance</a></li>
 </ul>
 </nav>
+<section>
+<h4>Download Attendance by Date</h4>
+<form method="get" action="{% url 'download_attendance_csv' %}">
+    <label for="date">Select Date:</label>
+    <input type="date" id="date" name="date" value="{{ today }}">
+    <button type="submit">Download</button>
+</form>
 
-
-<table border="2">
-<ul>
-    <tr>
-        <thead>
+<form method="get" action=".">
+    <label for="date">Select Date:</label>
+    <input type="date" id="date" name="date" value="{{ selected_date|default_if_none:'' }}">
+    <button type="submit" class="button">Filter</button>
+</form>
+<table>
+    <thead>
+        <tr>
             <th>ID</th>
             <th>First Name</th>
             <th>Last Name</th>
             <th>Date</th>
             <th>Status</th>
-        </thead>
-    </tr>
-    {% for record in attendance_records %}
-    <tr>
-        <td>{{ record.member.id }}</td>
-        <td><li>{{ record.member.first_name }}</li></td>
-        <td><li>{{ record.member.last_name }}</li></td>
-        <td><li>{{ record.date }}</li></td>
-        <td><li>{{ record.present }}</li></td>
-    </tr>
-    {% endfor %}
-</ul>
+        </tr>
+    </thead>
+    <tbody>
+        {% for record in attendance_records %}
+        <tr>
+            <td>{{ record.member.id }}</td>
+            <td>{{ record.member.first_name }}</td>
+            <td>{{ record.member.last_name }}</td>
+            <td>{{ record.date }}</td>
+            <td>{{ record.present|yesno:"Present,Absent" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No attendance records found for the selected date.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
 </table>
+</section>
 </body>
 </html>

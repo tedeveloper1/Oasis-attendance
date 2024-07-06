@@ -1,24 +1,22 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Team, Attend
+import csv
+from django.http import HttpResponse
+from django.utils.dateparse import parse_date
 from .forms import TeamMemberForm, AttendanceForm
 from django.utils import timezone
 
 # Home view
 def home(request):
-    today = timezone.now().date()
-    all_members = Team.objects.all()
-    attendance_today = Attend.objects.filter(date=today)
+    today = timezone.localtime().date()  # Get the local date based on the timezone
+    attended_members = Team.objects.filter(attend__date=today, attend__present=True)
+    absent_members = Team.objects.exclude(attend__date=today, attend__present=True)
     
-    attended_member_ids = attendance_today.values_list('member_id', flat=True)
-    attended_members = Team.objects.filter(id__in=attended_member_ids)
-    absent_members = Team.objects.exclude(id__in=attended_member_ids)
-
-    context = {
+    return render(request, 'attendanc/home.html', {
         'today': today,
         'attended_members': attended_members,
-        'absent_members': absent_members,
-    }
-    return render(request, 'attendanc/home.html', context)
+        'absent_members': absent_members
+    })
 def view_member(request):
     members = Team.objects.all()
     return render(request, 'attendanc/view_member.html', {'members': members})
@@ -63,17 +61,24 @@ def team_member_delete(request, pk):
 
 # Attendance list view
 def attendance_list(request):
-    attendance_records = Attend.objects.select_related('member').all()
-    return render(request, 'attendanc/attendance_list.html', {'attendance_records': attendance_records})
-
-# Create a new attendance record
+    selected_date = request.GET.get('date', None)
+    if selected_date:
+        attendance_records = Attend.objects.filter(date=selected_date)
+    else:
+        attendance_records = Attend.objects.all()
+    
+    context = {
+        'attendance_records': attendance_records,
+        'selected_date': selected_date,
+    }
+    return render(request, 'attendanc/attendance_list.html', context)
 
 
 # Create a new attendance record
 # views.py
 def attendance_create(request):
     team_members = Team.objects.all()  # Query all team members
-    today = timezone.now().date()  # Get today's date
+    today = timezone.localtime().date()  # Get today's date
     present_member_ids = Attend.objects.filter(date=today, present=True).values_list('member_id', flat=True)
 
     if request.method == 'POST':
@@ -127,3 +132,38 @@ def attendance_delete(request, pk):
         attendance.delete()
         return redirect('attendance_list')
     return render(request, 'attendanc/attendance_confirm_delete.html', {'attendance': attendance})
+
+
+def debug_date(request):
+    print(timezone.now())
+    return HttpResponse("Check your console for the current time.")
+
+def download_attendance_csv(request):
+    # Get the date from the request
+    date_str = request.GET.get('date')
+    date = parse_date(date_str)
+
+    # Set up the HTTP response for CSV
+    response = HttpResponse(content_type='text/csv')
+    if date:
+        response['Content-Disposition'] = f'attachment; filename="attendance_{date}.csv"'
+        attendances = Attend.objects.select_related('member').filter(date=date)
+    else:
+        response['Content-Disposition'] = 'attachment; filename="attendance.csv"'
+        attendances = Attend.objects.select_related('member').all()
+
+    # Create CSV writer
+    writer = csv.writer(response)
+    writer.writerow(['ID', 'First Name', 'Last Name', 'Date', 'Status'])
+
+    # Write data rows
+    for attendance in attendances:
+        writer.writerow([
+            attendance.member.id,
+            attendance.member.first_name,
+            attendance.member.last_name,
+            attendance.date,
+            'Present' if attendance.present else 'Absent'
+        ])
+
+    return response
