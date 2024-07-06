@@ -1,0 +1,37 @@
+<!-- attendance_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mark Attendance</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Oasis Volleyball Team</h1>
+    </header>
+    <nav>
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'attendance_list' %}">Attendance Records</a></li>
+        <li><a href="{% url 'attendance_create' %}">Mark Attendance</a></li>
+        <li><a href="{% url 'team_member_create' %}">Add New Member</a></li>
+    </ul>
+</nav>
+    <form method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Team Members</legend>
+            {% for member in team_members %}
+            <div>
+                <input type="checkbox" id="member_{{ member.id }}" name="members" value="{{ member.id }}">
+                <label for="member_{{ member.id }}">{{ member.first_name }} {{ member.last_name }}</label>
+            </div>
+            {% endfor %}
+        </fieldset>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>

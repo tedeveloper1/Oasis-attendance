@@ -1,0 +1,45 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oasis Volleyball Team</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Oasis Volleyball Team</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'team_member_list' %}">Attendance</a></li>
+            <li><a href="{% url 'attendance_list' %}">Attendance Records</a></li>
+            <li><a href="{% url 'attendance_create' %}">Mark Attendance</a></li>
+            <li><a href="{% url 'team_member_create' %}">Add New Member</a></li>
+            <li><a href="{% url 'view_member' %}">View member</a></li>
+
+        </ul>
+    </nav>
+    <section>
+        <h2>Attendance for {{ today }}</h2>
+        <h3>Members Who Attended</h3>
+        <ul>
+            {% for member in attended_members %}
+            <li>{{ member.first_name }} {{ member.last_name }}</li>
+            {% empty %}
+            <li>No members attended today.</li>
+            {% endfor %}
+        </ul>
+        <h3>Members Who Did Not Attend</h3>
+        <ul>
+            {% for member in absent_members %}
+            <li>{{ member.first_name }} {{ member.last_name }}</li>
+            {% empty %}
+            <li>All members attended today.</li>
+            {% endfor %}
+        </ul>
+    </section>
+</body>
+</html>

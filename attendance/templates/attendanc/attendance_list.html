@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Oasis Volleyball Attendance Records</h1>
+    </header>
+    <nav>  
+<ul>
+    <li><a href="{% url 'home' %}">Home</a></li>
+    <li><a href="{% url 'attendance_list' %}">Attendance Records</a></li>
+    <li><a href="{% url 'attendance_create' %}">Mark Attendance</a></li>
+    <li><a href="{% url 'attendance_create' %}">Add Attendance</a></li>
+    <li><a href="{% url 'team_member_create' %}">Add New Member</a></li>
+</ul>
+</nav>
+
+
+<table border="2">
+<ul>
+    <tr>
+        <thead>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date</th>
+            <th>Status</th>
+        </thead>
+    </tr>
+    {% for record in attendance_records %}
+    <tr>
+        <td>{{ record.member.id }}</td>
+        <td><li>{{ record.member.first_name }}</li></td>
+        <td><li>{{ record.member.last_name }}</li></td>
+        <td><li>{{ record.date }}</li></td>
+        <td><li>{{ record.present }}</li></td>
+    </tr>
+    {% endfor %}
+</ul>
+</table>
+</body>
+</html>

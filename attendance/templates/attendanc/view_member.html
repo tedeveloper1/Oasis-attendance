@@ -1,0 +1,66 @@
+<!-- team_member_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oasis Volleyball Team Members</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <h1>Oasis Volleyball Team Members</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'attendance_list' %}">Attendance Records</a></li>
+            <li><a href="{% url 'attendance_create' %}">Mark Attendance</a></li>
+            <li><a href="{% url 'team_member_create' %}">Add New Member</a></li>
+        </ul>
+    </nav>
+    <section>
+        <h2>Team Members</h2>
+        
+        <table border="2">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Age</th>
+                    <th>Address</th>
+                    <th>School Name</th>
+                    <th>Parent Name</th>
+                    <th>Parent Tel</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for member in members %}
+                <tr>
+                    <td>{{ member.id }}</td>
+                    <td>{{ member.first_name }}</td>
+                    <td>{{ member.last_name }}</td>
+                    <td>{{ member.age }}</td>
+                    <td>{{ member.address }}</td>
+                    <td>{{ member.school_name }}</td>
+                    <td>{{ member.parent_name }}</td>
+                    <td>{{ member.parent_tel }}</td>
+                    <td>
+                        <a href="{% url 'team_member_update' member.pk %}">Edit</a> | 
+                        <a href="{% url 'team_member_delete' member.pk %}">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8">No team members available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>
+

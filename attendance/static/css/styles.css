@@ -1,0 +1,153 @@
+/* static/css/styles.css */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #03460e;
+    
+}
+
+header, footer {
+    background-color: #3a3a3a;
+    color: #fff;
+    padding: 1em;
+    text-align: center;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    background-color: #555;
+    margin: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 1em;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    padding: 0.5em 1em;
+    background-color: #777;
+    border-radius: 4px;
+}
+
+nav ul li a:hover {
+    background-color: #3a3a3a;
+}
+
+section {
+    margin-left: 1em;
+    padding: 2em;
+    max-width: 90%;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1em;
+    
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+    color: #fff;
+    font-weight: bold;
+}
+
+th, td {
+    padding: 0.5em;
+    text-align: left;
+}
+legend{
+    color: #fff;
+    font-weight: bold; 
+}
+label{
+    color: #fff;
+    font-weight: bold;
+}
+/* static/css/styles.css */
+
+/* Button styles */
+.button {
+    display: inline-block;
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.button-danger {
+    background-color: #f44336;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+.button-danger:hover {
+    background-color: #d32f2f;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table,td {
+    border: 1px solid #ddd;
+    color: #0e0c0c;
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: #0e0c0c;
+    color: #ccc;
+}
+
+/* Form styles */
+form {
+    margin-top: 20px;
+    margin-left: 120px;
+    width: 80%;
+    height: 70%;
+    background-color: #3a3a3a;
+}
+
+fieldset {
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+legend {
+    font-weight: bold;
+}
+
+input[type="text"], input[type="date"], input[type="email"], textarea {
+    width: 100%;
+    padding: 8px;
+    margin: 4px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="submit"], button {
+    margin-top: 10px;
+}
+
