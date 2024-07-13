@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <header>
@@ -14,9 +14,7 @@
     <nav>  
 <ul>
     <li><a href="{% url 'home' %}">Home</a></li>
-    <li><a href="{% url 'attendance_list' %}">Attendance Records</a></li>
     <li><a href="{% url 'attendance_create' %}">Mark Attendance</a></li>
-    <li><a href="{% url 'attendance_create' %}">Add Attendance</a></li>
     <li><a href="{% url 'team_member_create' %}">Add New Member</a></li>
     <li><a href="{% url 'download_attendance_csv' %}">Download Attendance</a></li>
 </ul>
@@ -29,7 +27,7 @@
     <button type="submit">Download</button>
 </form>
 
-<form method="get" action=".">
+<form method="get" action="{% url 'attendance_list' %}">
     <label for="date">Select Date:</label>
     <input type="date" id="date" name="date" value="{{ selected_date|default_if_none:'' }}">
     <button type="submit" class="button">Filter</button>
@@ -47,7 +45,7 @@
     <tbody>
         {% for record in attendance_records %}
         <tr>
-            <td>{{ record.member.id }}</td>
+            <td>{{ forloop.counter }}</td>
             <td>{{ record.member.first_name }}</td>
             <td>{{ record.member.last_name }}</td>
             <td>{{ record.date }}</td>

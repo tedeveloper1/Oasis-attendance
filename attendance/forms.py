@@ -1,5 +1,7 @@
 from django import forms
-from .models import Team, Attend
+from .models import *
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 class TeamMemberForm(forms.ModelForm):
      class Meta:
@@ -8,6 +10,14 @@ class TeamMemberForm(forms.ModelForm):
         widgets = {
             'gender': forms.RadioSelect(choices=Team.GENDER_CHOICES),
         }
+
+class HandballMemberForm(forms.ModelForm):
+    class Meta:
+        model = HandballMember
+        fields = ['first_name', 'last_name', 'age','gender' ,'school_name', 'parent_name', 'address', 'parent_tel']
+        widgets = {
+            'gender':forms.RadioSelect(choices=HandballMember.GENDER_CHOICES),
+        }
 class AttendanceForm(forms.ModelForm):
     class Meta:
         model = Attend
@@ -15,3 +25,11 @@ class AttendanceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField()
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+
+

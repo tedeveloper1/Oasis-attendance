@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oasis Volleyball Team Members</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <header>
-        <h1>Oasis Volleyball Team Members</h1>
+        <h1>Oasis Community Sport Center Registered Members</h1>
     </header>
     <nav>
         <ul>
@@ -22,6 +22,10 @@
     </nav>
     <section>
         <h2>Team Members</h2>
+        
+        <form method="GET" action="{% url 'view_member' %}">
+            <button type="submit" name="download" value="true">Download CSV</button>
+        </form>
         
         <table border="2">
             <thead>
@@ -41,7 +45,7 @@
             <tbody>
                 {% for member in members %}
                 <tr>
-                    <td>{{ member.id }}</td>
+                    <td>{{ forloop.counter }}</td>
                     <td>{{ member.first_name }}</td>
                     <td>{{ member.last_name }}</td>
                     <td>{{ member.age }}</td>
@@ -57,7 +61,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="8">No team members available.</td>
+                    <td colspan="10">No team members available.</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -65,4 +69,3 @@
     </section>
 </body>
 </html>
-

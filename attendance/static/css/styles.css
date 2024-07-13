@@ -1,10 +1,13 @@
 /* static/css/styles.css */
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
-    background-color: #03460e;
-    
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url("../images/background.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 header, footer {
@@ -41,29 +44,13 @@ nav ul li a:hover {
 
 section {
     margin-left: 1em;
-    padding: 2em;
+    padding: 1em;
     max-width: 90%;
+    margin: 2em;
     background-color: #fff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1em;
-    
-}
-
-table, th, td {
-    border: 1px solid #ddd;
-    color: #fff;
-    font-weight: bold;
-}
-
-th, td {
-    padding: 0.5em;
-    text-align: left;
-}
 legend{
     color: #fff;
     font-weight: bold; 
@@ -102,23 +89,29 @@ label{
 }
 
 /* Table styles */
+/* styles.css */
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
-table,td {
+th, td {
+    padding: 8px 12px;
     border: 1px solid #ddd;
-    color: #0e0c0c;
-    padding: 8px;
-    text-align: left;
 }
 
-th {
-    background-color: #0e0c0c;
-    color: #ccc;
+thead {
+    background-color: #f4f4f4;
 }
+
+tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
 
 /* Form styles */
 form {
@@ -151,3 +144,26 @@ input[type="submit"], button {
     margin-top: 10px;
 }
 
+.wrapper {
+    flex: 1; /* This makes sure the wrapper takes up the full remaining space */
+    display: flex;
+    flex-direction: column;
+}
+
+header, main {
+    padding: 20px;
+}
+
+main {
+    flex: 1; /* Ensures main content takes up the remaining space within wrapper */
+}
+
+footer {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}

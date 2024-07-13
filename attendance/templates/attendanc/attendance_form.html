@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mark Attendance</title>
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
     <header>
@@ -16,7 +16,6 @@
     <ul>
         <li><a href="{% url 'home' %}">Home</a></li>
         <li><a href="{% url 'attendance_list' %}">Attendance Records</a></li>
-        <li><a href="{% url 'attendance_create' %}">Mark Attendance</a></li>
         <li><a href="{% url 'team_member_create' %}">Add New Member</a></li>
     </ul>
 </nav>

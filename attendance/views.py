@@ -3,10 +3,45 @@ from .models import Team, Attend
 import csv
 from django.http import HttpResponse
 from django.utils.dateparse import parse_date
-from .forms import TeamMemberForm, AttendanceForm
+from .forms import *
 from django.utils import timezone
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login as auth_login
+from .forms import RegisterForm
 
-# Home view
+def login(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                auth_login(request, user)
+                return redirect('home')
+            else:
+                form.add_error(None, 'Invalid username or password')
+    else:
+        form = AuthenticationForm()
+    return render(request, 'attendanc/login.html', {'form': form})
+
+def register(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            auth_login(request, user)
+            return redirect('home')
+    else:
+        form = RegisterForm()
+    return render(request, 'attendanc/register.html', {'form': form})
+
+
+            
+            
+
+@login_required(login_url='login')
 def home(request):
     today = timezone.localtime().date()  # Get the local date based on the timezone
     attended_members = Team.objects.filter(attend__date=today, attend__present=True)
@@ -17,9 +52,42 @@ def home(request):
         'attended_members': attended_members,
         'absent_members': absent_members
     })
+# views.py
+import csv
+from django.http import HttpResponse
+
+
+
 def view_member(request):
-    members = Team.objects.all()
-    return render(request, 'attendanc/view_member.html', {'members': members})
+    query = request.GET.get('q')
+    if query:
+        members = Team.objects.filter(first_name__icontains=query) | Team.objects.filter(last_name__icontains=query)
+    else:
+        members = Team.objects.all()
+    
+    if 'download' in request.GET:
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="team_members.csv"'
+        
+        writer = csv.writer(response)
+        writer.writerow(['First Name', 'Last Name', 'Age', 'Gender', 'Address', 'School Name', 'Parent Name', 'Parent Tel'])
+        
+        for member in members:
+            writer.writerow([
+                member.first_name,
+                member.last_name,
+                member.age,
+                member.gender,
+                member.address,
+                member.school_name,
+                member.parent_name,
+                member.parent_tel
+            ])
+        
+        return response
+    else:
+        return render(request, 'attendanc/view_member.html', {'members': members})
+
 
 
 # Team member list view
@@ -33,11 +101,23 @@ def team_member_create(request):
         form = TeamMemberForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('team_member_list')
+            return redirect('team_member_create')
     else:
         form = TeamMemberForm()
     
     return render(request, 'attendanc/team_member_form.html', {'form': form})
+
+def hand_ball_create(request):
+    if request.method == 'POST':
+        form = HandballMember(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('attendanc/hand_ball_create',{'form': form})
+        
+    else:
+        form = HandballMemberForm
+
+    return render(request, 'attendanc/handball_form.html',{'form': form})
 
 # Update an existing team member
 def team_member_update(request, pk):
