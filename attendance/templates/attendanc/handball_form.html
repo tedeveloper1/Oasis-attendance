@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Handball</title>
+    {% load static%}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+   <form method="POST">
+    {% csrf_token%}
+    <fieldset>
+        <legend>Hand Ball Member Information</legend>
+        {{ form.as_p}}
+    </fieldset>
+    <button type="submit" class="button">Add  Handball Member</button>
+   </form>
+
+   </form> 
+</body>
+</html>

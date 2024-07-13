@@ -1,0 +1,18 @@
+{
+  "name": "oasis_volleyball",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss -i ./styles/tailwind.css -o ./static/css/tailwind.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "tailwindcss": "^3.4.4"
+  }
+}
