@@ -13,8 +13,8 @@
     </header>
     <nav>  
 <ul>
-    <li><a href="{% url 'home' %}">Home</a></li>
-    <li><a href="{% url 'attendance_create' %}">Mark Attendance</a></li>
+    <!-- <li><a href="{% url 'home' %}">Home</a></li> -->
+    <li><a href="{% url 'vally_ballattendance_create' %}">Mark Attendance</a></li>
     <li><a href="{% url 'team_member_create' %}">Add New Member</a></li>
     <li><a href="{% url 'download_attendance_csv' %}">Download Attendance</a></li>
 </ul>
@@ -27,7 +27,7 @@
     <button type="submit">Download</button>
 </form>
 
-<form method="get" action="{% url 'attendance_list' %}">
+<form method="get" action="{% url 'valley_attendance_list' %}">
     <label for="date">Select Date:</label>
     <input type="date" id="date" name="date" value="{{ selected_date|default_if_none:'' }}">
     <button type="submit" class="button">Filter</button>

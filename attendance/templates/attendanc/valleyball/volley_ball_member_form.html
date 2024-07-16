@@ -1,0 +1,36 @@
+<!-- templates/attendance/team_member_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Document</title>
+   {% load static %}
+   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+   <header>
+       <h1>Welcome to the Oasis Volleyball Team</h1>
+   </header>
+       <nav>
+           <ul>
+               <li><a href="{% url 'home' %}">Home</a></li>
+               <li><a href="{% url 'attendance_list' %}">Attendance Records</a></li>
+               <li><a href="{% url 'vally_ballattendance_create' %}">Mark Attendance</a></li>
+               <li><a href="{% url 'team_member_create' %}">Add New Member</a></li>
+           </ul>
+       </nav>
+  
+   <h2>Add New Team Member</h2>
+   <form method="post">
+       {% csrf_token %}
+       <fieldset>
+           <legend>Member Information</legend>
+           {{ form.as_p }}
+       </fieldset>
+       <button type="submit" class="button">Add Member</button>
+   </form>
+</body>
+</html>
+   
+

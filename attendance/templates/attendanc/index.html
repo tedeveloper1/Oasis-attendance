@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Page Slider with Tailwind CSS</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .slider {
+            display: flex;
+            transition: transform 1s ease-in-out;
+        }
+        .slide {
+            min-width: 100%;
+            height: 100vh;
+            box-sizing: border-box;
+            border: 2px solid white;
+        }
+        .slide-content {
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            margin: 0;
+        }
+        .slide-content div {
+            padding: 4px;
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden flex flex-col min-h-screen">
+    <!-- Header and Navigation -->
+    <header class="bg-gray-800 text-white p-2">
+        <h1 class="text-2xl">Oasis Community Sport Center</h1>
+    </header>
+
+    <!-- Slider -->
+    <div class="relative flex-grow">
+        <div class="slider">
+            <div class="slide">
+                <div class="slide-content" style="background-image: url('{% static 'images/valleballbackground.jpg' %}');">
+                    <div class="bg-black bg-opacity-50 text-white text-center p-4 rounded">
+                        <h1 class="text-4xl mb-4">Volleyball Training</h1>
+                        <p class="text-lg">At Oasis Community Sport Center, we help children learn and perfect their volleyball skills. Join us to make sports a fun and educational experience!</p>
+                        <a href="{% url 'volleyball_management' %}" class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Manage</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content" style="background-image: url('{% static 'images/handball.jpg' %}');">
+                    <div class="bg-black bg-opacity-50 text-white text-center p-4 rounded">
+                        <h1 class="text-4xl mb-4">Handball Training</h1>
+                        <p class="text-lg">We provide expert handball coaching to help children develop their skills and confidence in the sport. Let's play and grow together at Oasis Community Sport Center!</p>
+                        <a href="{% url 'handball_management' %}" class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Manage</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content" style="background-image: url('{% static 'images/Basketball.jpg' %}');">
+                    <div class="bg-black bg-opacity-50 text-white text-center p-4 rounded">
+                        <h1 class="text-4xl mb-4">Basketball Training</h1>
+                        <p class="text-lg">Our basketball programs are designed to teach children the fundamentals and advanced techniques of the game, fostering teamwork and sportsmanship at Oasis Community Sport Center.</p>
+                        <a href="{% url 'basketball_management' %}" class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Manage</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content" style="background-image: url('{% static 'images/karate.jpg' %}');">
+                    <div class="bg-black bg-opacity-50 text-white text-center p-4 rounded">
+                        <h1 class="text-4xl mb-4">Karate Training</h1>
+                        <p class="text-lg">Join our karate classes to learn self-discipline, respect, and physical fitness. Our experienced instructors will guide you every step of the way at Oasis Community Sport Center.</p>
+                        <a href="{% url 'karate_management' %}" class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Manage</a>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="slide-content" style="background-image: url('{% static 'images/Intore.jpg' %}');">
+                    <div class="bg-black bg-opacity-50 text-white text-center p-4 rounded">
+                        <h1 class="text-4xl mb-4">Traditional Dance</h1>
+                        <p class="text-lg">Experience the rich cultural heritage of our community through traditional dance classes. Celebrate and learn with us at Oasis Community Sport Center.</p>
+                        <a href="{% url 'dance_management' %}" class="mt-4 inline-block bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Manage</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="prev-slide absolute top-1/2 transform -translate-y-1/2 left-4 bg-black bg-opacity-50 text-white p-4 rounded-full">&#10094;</button>
+        <button class="next-slide absolute top-1/2 transform -translate-y-1/2 right-4 bg-black bg-opacity-50 text-white p-4 rounded-full">&#10095;</button>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white p-4 text-center">
+        <p>&copy; 2024 Oasis Community Sport Center. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let isSliding = false;
+
+        function showSlide(index) {
+            const slider = document.querySelector('.slider');
+            slider.style.transform = `translateX(${-index * 100}%)`;
+        }
+
+        function nextSlide() {
+            if (isSliding) return;
+            isSliding = true;
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+            setTimeout(() => isSliding = false, 1000); // Adjust to match CSS transition duration
+        }
+
+        function prevSlide() {
+            if (isSliding) return;
+            isSliding = true;
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+            setTimeout(() => isSliding = false, 1000); // Adjust to match CSS transition duration
+        }
+
+        // Auto slide function
+        setInterval(nextSlide, 5000); // Change slide every 5 seconds
+
+        // Add event listeners for manual slide control
+        document.querySelector('.next-slide').addEventListener('click', nextSlide);
+        document.querySelector('.prev-slide').addEventListener('click', prevSlide);
+
+        // Ensure initial slide is shown
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

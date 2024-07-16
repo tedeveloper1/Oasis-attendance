@@ -18,6 +18,14 @@ class HandballMemberForm(forms.ModelForm):
         widgets = {
             'gender':forms.RadioSelect(choices=HandballMember.GENDER_CHOICES),
         }
+
+class ValleyballMemberForm(forms.ModelForm):
+    class Meta:
+        model = VolleballMember
+        fields = ['first_name', 'last_name', 'age','gender' ,'school_name', 'parent_name', 'address', 'parent_tel']
+        widgets = {
+            'gender':forms.RadioSelect(choices=HandballMember.GENDER_CHOICES),
+        }
 class AttendanceForm(forms.ModelForm):
     class Meta:
         model = Attend

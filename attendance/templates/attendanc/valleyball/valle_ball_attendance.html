@@ -23,7 +23,7 @@
         {% csrf_token %}
         <fieldset>
             <legend>Team Members</legend>
-            {% for member in team_members %}
+            {% for member in vally_members %}
             <div>
                 <input type="checkbox" id="member_{{ member.id }}" name="members" value="{{ member.id }}">
                 <label for="member_{{ member.id }}">{{ member.first_name }} {{ member.last_name }}</label>

@@ -52,9 +52,9 @@ def home(request):
         'attended_members': attended_members,
         'absent_members': absent_members
     })
-# views.py
-import csv
-from django.http import HttpResponse
+
+def index(request):
+    return render(request, 'attendanc/index.html')
 
 
 
@@ -107,17 +107,7 @@ def team_member_create(request):
     
     return render(request, 'attendanc/team_member_form.html', {'form': form})
 
-def hand_ball_create(request):
-    if request.method == 'POST':
-        form = HandballMember(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('attendanc/hand_ball_create',{'form': form})
-        
-    else:
-        form = HandballMemberForm
 
-    return render(request, 'attendanc/handball_form.html',{'form': form})
 
 # Update an existing team member
 def team_member_update(request, pk):
@@ -183,10 +173,6 @@ def attendance_create(request):
     return render(request, 'attendanc/attendance_form.html', context)
 
 
-
-# Update an existing attendance record
-# Update an existing attendance record
-# views.py
 def attendance_update(request, pk):
     attendance = get_object_or_404(Attend, pk=pk)
     team_members = Team.objects.all()  # Query all team members
@@ -212,11 +198,6 @@ def attendance_delete(request, pk):
         attendance.delete()
         return redirect('attendance_list')
     return render(request, 'attendanc/attendance_confirm_delete.html', {'attendance': attendance})
-
-
-def debug_date(request):
-    print(timezone.now())
-    return HttpResponse("Check your console for the current time.")
 
 def download_attendance_csv(request):
     # Get the date from the request
@@ -247,3 +228,86 @@ def download_attendance_csv(request):
         ])
 
     return response
+
+
+
+
+def volleyball_management(request):
+    return render(request, 'attendanc/valleyball/volleyball_management.html')
+
+def volleyball_create(request):
+    if request.method == 'POST':
+        form = ValleyballMemberForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('volleyball_create')
+    else:
+        form = ValleyballMemberForm()
+    
+    return render(request, 'attendanc/valleyball/volley_ball_member_form.html', {'form': form})
+
+def vally_ballattendance_create(request):
+    vally_members = VolleballMember.objects.all()
+    today = timezone.localtime().date()
+    present_member_ids = Vally_Attend.objects.filter(date=today, present=True).values_list('member_id', flat=True)
+
+    if request.method == 'POST':
+        selected_members = request.POST.getlist('members')
+        Vally_Attend.objects.filter(date=today).delete()
+
+        for member_id in selected_members:
+            member = get_object_or_404(VolleballMember, pk=member_id)
+            Vally_Attend.objects.create(
+                member=member,
+                date= today,
+                present =True
+            )
+        return redirect('valley_attendance_list')
+    context = {
+        'vally_members' : vally_members,
+        'present_member_ids':present_member_ids,
+        'date': today,
+    }
+
+    return render(request, 'attendanc/valleyball/valle_ball_attendance.html', context)
+
+def  valley_attendance_list(request):
+    selected_date = request.GET.get('date',None)
+    if selected_date:
+        attendance_records = Vally_Attend.objects.filter(date=selected_date)
+    else:
+        attendance_records = Vally_Attend.objects.all()
+
+    context ={
+        'attendance_records':attendance_records,
+        'selected_date': selected_date,
+    }
+
+    return render(request, 'attendanc/valleyball/valley_attendance_list.html', context)
+
+def handball_management(request):
+    return render(request, 'attendanc/handball/handball_management.html')
+
+def hand_ball_create(request):
+    if request.method == 'POST':
+        form = HandballMember(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('attendanc/hand_ball_create',{'form': form})
+        
+    else:
+        form = HandballMemberForm
+
+    return render(request, 'attendanc/handball_form.html',{'form': form})
+
+def basketball_management(request):
+    return render(request, 'attendanc/basketball_management.html')
+
+def karate_management(request):
+    return render(request, 'attendanc/karate_management.html')
+
+def dance_management(request):
+    return render(request, 'attendanc/dance_management.html')
+
+
+
